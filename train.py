@@ -333,7 +333,9 @@ def train(hyp, opt, device, tb_writer=None):
 
         # 暂时用zip, 每轮batch数以数量少的为准
         for det_batch, seg_batch in zip(pbar, segpbar):  # batch -------------------------------------------------------------
+            print('seg '*100)
             i, (imgs, targets, paths, _) = det_batch  # 检测
+            #print(paths)
             _, (segimgs, segtargets) = seg_batch   # 分割
             if len(imgs)==1 or len(segimgs)==1:  # 手动droplast,SE或者gloablpool后的bn不支持单个样本，检测loader调用地方太多不好droplast，这里手动
                 continue
@@ -383,6 +385,8 @@ def train(hyp, opt, device, tb_writer=None):
                 # 无aux模型输出不用[],有aux模型几个结果输出用[]包装
                 # Base,PSP和Lab用这个,无aux
                 segloss = compute_seg_loss(pred[1], segtargets.to(device)) * batch_size # 分割loss CE是平均loss, 配合检测做梯度积累, 因此乘以batchsize(注意有梯度积累其真实batchsize约是nbs=64)  
+                print('segloss '*30)
+                print(segloss)
                 # Bise用这个,两个aux   
                 # segloss = compute_seg_loss(pred[1][0], pred[1][1], pred[1][2], segtargets.to(device)) * batch_size    
                 # 一个aux，没有用这个

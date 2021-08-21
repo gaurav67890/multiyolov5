@@ -462,11 +462,13 @@ def get_citys_loader(root=os.path.expanduser('data/citys/'), split="train", mode
         input_transform = transforms.Compose([
             transforms.ColorJitter(brightness=0.45, contrast=0.45,
                                    saturation=0.45, hue=0.15),
+            #transforms.Resize((512,1024)),
             transforms.ToTensor(),
             # transforms.Normalize([.485, .456, .406], [.229, .224, .225])  # 为了配合检测预处理保持一致, 分割不做norm
         ])
     else:
         input_transform = transforms.Compose([
+            transforms.Resize((512,1024)),
             transforms.ToTensor(),
             # transforms.Normalize([.485, .456, .406], [.229, .224, .225])  # 为了配合检测预处理保持一致, 分割不做norm
         ])

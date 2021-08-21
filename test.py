@@ -47,6 +47,9 @@ def seg_validation(model, n_segcls, valloader, device, half_precision=True):
     total_inter, total_union, total_correct, total_label = 0, 0, 0, 0
     tbar = tqdm(valloader, desc='\r')
     for i, (image, target) in enumerate(tbar):
+        print('Check '*30)
+        print(image.shape)
+        print(target.shape)
         image = image.to(device, non_blocking=True)
         image = image.half() if half else image.float()
         with torch.no_grad():
